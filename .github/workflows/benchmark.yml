@@ -1,0 +1,46 @@
+name: memory benchmark(baseline-evtx)
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      BRANCH_NAME: ${{ github.head_ref }}
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.ref }}
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Checkout hayabusa-sample-evtx repo
+        uses: actions/checkout@v4
+        with:
+          repository: Yamato-Security/hayabusa-sample-evtx
+          path: hayabusa-sample-evtx
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Create a directory for extraction
+        run: mkdir -p evtx_files
+
+      - name: Download all-evtx.tgz
+        run: curl -L https://github.com/NextronSystems/evtx-baseline/releases/download/v0.8/all-evtx.tgz -o all-evtx.tgz
+
+      - name: Extract the tgz file into the directory
+        run: tar -xzvf all-evtx.tgz -C evtx_files
+
+      - name: Run on dev branch
+        run: |
+          cargo run --release -- update-rules -q
+          cargo run --release -- csv-timeline -d ./evtx_files -o dev.csv -p super-verbose -q -w -D -n -u --debug
+
+      - name: Run on main branch
+        run: |
+          git checkout main
+          cargo run --release -- update-rules -q
+          cargo run --release -- csv-timeline -d ./evtx_files -o main.csv -p super-verbose -q -w -D -n -u --debug
