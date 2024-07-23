@@ -1,7 +1,17 @@
 name: memory benchmark(baseline-evtx)
 on:
   workflow_dispatch:
-
+    inputs:
+      ref_type:
+        description: 'Reference type (branch or tag)'
+        required: true
+        type: choice
+        options:
+        - branch
+        - tag
+      ref_name:
+        description: 'Reference name (branch name or tag name)'
+        required: true
 jobs:
   build:
     runs-on: ubuntu-latest
