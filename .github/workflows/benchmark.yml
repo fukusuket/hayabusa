@@ -26,12 +26,12 @@ jobs:
         run: curl -L https://github.com/NextronSystems/evtx-baseline/releases/download/v0.8/all-evtx.tgz -o all-evtx.tgz
 
       - name: Extract the tgz file into the directory
-        run: tar -xzvf all-evtx.tgz -C evtx_files
+        run: tar -xzvf all-evtx.tgz -C evtx_files 1>/dev/null
 
       - name: Run on dev branch(update-rules)
         run: |
           free -h
-          cargo run --release -- update-rules -q
+          cargo run --release -- update-rules -q 1>/dev/null
 
       - name: Run on dev branch(json-timeline)
         run: |
@@ -41,7 +41,7 @@ jobs:
         run: |
           free -h
           git checkout main
-          cargo run --release -- update-rules -q
+          cargo run --release -- update-rules -q 1>/dev/null
 
       - name: Run on main branch(json-timeline)
         run: |
