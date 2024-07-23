@@ -1,27 +1,18 @@
 name: memory benchmark(baseline-evtx)
 on:
   workflow_dispatch:
-
+    inputs:
+      branch1:
+        description: 'First branch to run benchmarks on'
+        required: true
+        default: 'main'
+      branch2:
+        description: 'Second branch to run benchmarks on'
+        required: true
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      BRANCH_NAME: ${{ github.head_ref }}
-
     steps:
-      - name: Checkout main
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.ref }}
-          submodules: recursive
-          fetch-depth: 0
-
-      - name: Checkout hayabusa-sample-evtx repo
-        uses: actions/checkout@v4
-        with:
-          repository: Yamato-Security/hayabusa-sample-evtx
-          path: hayabusa-sample-evtx
-
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
 
@@ -34,28 +25,31 @@ jobs:
       - name: Extract the tgz file into the directory
         run: tar -xzvf all-evtx.tgz -C evtx_files
 
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.BRANCH1 }}
+          submodules: recursive
+          fetch-depth: 0
+
       - name: Run on dev branch(update-rules)
         run: |
           free -h
           cargo run --release -- update-rules -q
 
-      - name: Run on dev branch(csv-timeline)
-        run: |
-          cargo run --release -- csv-timeline -d ./evtx_files -o dev.csv -p super-verbose -q -w -D -n -u --debug
-
       - name: Run on dev branch(json-timeline)
         run: |
           cargo run --release -- json-timeline -d ./hayabusa-sample-evtx -o dev.jsonl -L -p super-verbose -q -w -D -n -u --debug
 
+      - name: Checkout branch2
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.BRANCH2 }}
+
       - name: Run on main branch(update-rules)
         run: |
           free -h
-          git checkout main
           cargo run --release -- update-rules -q
-
-      - name: Run on main branch(csv-timeline)
-        run: |
-          cargo run --release -- csv-timeline -d ./evtx_files -o main.csv -p super-verbose -q -w -D -n -u --debug
 
       - name: Run on main branch(json-timeline)
         run: |
