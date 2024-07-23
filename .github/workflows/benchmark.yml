@@ -34,15 +34,29 @@ jobs:
       - name: Extract the tgz file into the directory
         run: tar -xzvf all-evtx.tgz -C evtx_files
 
-      - name: Run on dev branch
+      - name: Run on dev branch(update-rules)
         run: |
+          free -h
           cargo run --release -- update-rules -q
+
+      - name: Run on dev branch(csv-timeline)
+        run: |
           cargo run --release -- csv-timeline -d ./evtx_files -o dev.csv -p super-verbose -q -w -D -n -u --debug
+
+      - name: Run on dev branch(json-timeline)
+        run: |
           cargo run --release -- json-timeline -d ./hayabusa-sample-evtx -o dev.jsonl -L -p super-verbose -q -w -D -n -u --debug
 
-      - name: Run on main branch
+      - name: Run on main branch(update-rules)
         run: |
+          free -h
           git checkout main
           cargo run --release -- update-rules -q
+
+      - name: Run on main branch(csv-timeline)
+        run: |
           cargo run --release -- csv-timeline -d ./evtx_files -o main.csv -p super-verbose -q -w -D -n -u --debug
+
+      - name: Run on main branch(json-timeline)
+        run: |
           cargo run --release -- json-timeline -d ./hayabusa-sample-evtx -o main.jsonl -L -p super-verbose -q -w -D -n -u --debug
