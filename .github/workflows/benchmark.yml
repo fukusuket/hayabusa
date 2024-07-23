@@ -35,7 +35,7 @@ jobs:
 
       - name: Run on dev branch(json-timeline)
         run: |
-          cargo run --release -- json-timeline -d ./evtx_files -o dev.jsonl -L -p super-verbose -q -w -D -n -u --debug
+          cargo run --release -- json-timeline -d ./evtx_files -C -o timeline.jsonl -L -p super-verbose -q -w -D -n -u --debug
 
       - name: Run on main branch(update-rules)
         run: |
@@ -45,4 +45,4 @@ jobs:
 
       - name: Run on main branch(json-timeline)
         run: |
-          cargo run --release -- json-timeline -d ./evtx_files -o main.jsonl -L -p super-verbose -q -w -D -n -u --debug
+          cargo run --release -- json-timeline -d ./evtx_files -C -o timeline.jsonl -L -p super-verbose -q -w -D -n -u --debug
