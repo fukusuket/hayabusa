@@ -7,22 +7,19 @@ on:
         required: true
         type: choice
         options:
-        - branch
-        - tag
+          - branch
+          - tag
       ref_name:
         description: 'Reference name (branch name or tag name)'
         required: true
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      BRANCH_NAME: ${{ github.head_ref }}
-
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.ref }}
+          ref: ${{ github.event.inputs.ref_name }}
           submodules: recursive
           fetch-depth: 0
 
