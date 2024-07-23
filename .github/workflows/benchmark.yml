@@ -39,10 +39,6 @@ jobs:
           free -h
           cargo run --release -- update-rules -q
 
-      - name: Run on dev branch(csv-timeline)
-        run: |
-          cargo run --release -- csv-timeline -d ./evtx_files -o dev.csv -p super-verbose -q -w -D -n -u --debug
-
       - name: Run on dev branch(json-timeline)
         run: |
           cargo run --release -- json-timeline -d ./hayabusa-sample-evtx -o dev.jsonl -L -p super-verbose -q -w -D -n -u --debug
@@ -52,10 +48,6 @@ jobs:
           free -h
           git checkout main
           cargo run --release -- update-rules -q
-
-      - name: Run on main branch(csv-timeline)
-        run: |
-          cargo run --release -- csv-timeline -d ./evtx_files -o main.csv -p super-verbose -q -w -D -n -u --debug
 
       - name: Run on main branch(json-timeline)
         run: |
