@@ -73,7 +73,6 @@ jobs:
       - name: Clone hayabusa rule repo
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
           repository: Yamato-Security/hayabusa-rules
           path: hayabusa-rules
 
