@@ -75,6 +75,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           repository: Yamato-Security/hayabusa-rules
+          fetch-depth: 0
           path: hayabusa-rules
 
       - name: Set up Rust toolchain
@@ -125,7 +126,7 @@ jobs:
           cp ./target/release/hayabusa release-binaries/
           cp -r ./config release-binaries/config
           cp -r ./logs release-binaries/logs
-          cp -a ./hayabusa-rules/. release-binaries/rules
+          cp -r ./hayabusa-rules/. release-binaries/rules
           case ${{ matrix.info.os }} in
             'ubuntu-latest')
                 mv release-binaries/hayabusa release-binaries/hayabusa-${{ github.event.inputs.release_ver }}-lin-intel-x64-gnu ;;
