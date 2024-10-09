@@ -97,6 +97,11 @@ jobs:
           mkdir -p release-binaries/logs
           Copy-Item -Path ./target/release/hayabusa.exe -Destination release-binaries/
           Copy-Item -Recurse -Path ./config -Destination release-binaries/
+          Remove-Item -Path ./hayabusa-rules/.gitignore -Force
+          Remove-Item -Path ./hayabusa-rules/*.md -Force
+          Remove-Item -Path ./hayabusa-rules/.github -Recurse -Force
+          Remove-Item -Path ./hayabusa-rules/scripts -Recurse -Force
+          Remove-Item -Path ./hayabusa-rules/doc -Recurse -Force
           Copy-Item -Recurse -Path ./hayabusa-rules/ -Destination release-binaries/rules -Force
           switch ("${{ matrix.info.os }}") {
               "windows-latest" { mv release-binaries/hayabusa.exe release-binaries/hayabusa-${{ github.event.inputs.release_ver }}-win-x64.exe }
@@ -126,6 +131,11 @@ jobs:
           cp ./target/release/hayabusa release-binaries/
           cp -r ./config release-binaries/config
           cp -r ./logs release-binaries/logs
+          rm -f ./hayabusa-rules/.gitignore
+          rm -f ./hayabusa-rules/*.md
+          rm -rf ./hayabusa-rules/.github
+          rm -rf ./hayabusa-rules/scripts
+          rm -rf ./hayabusa-rules/doc
           cp -r ./hayabusa-rules/. release-binaries/rules
           case ${{ matrix.info.os }} in
             'ubuntu-latest')
