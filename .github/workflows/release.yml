@@ -86,15 +86,15 @@ jobs:
           linker = "aarch64-linux-gnu-gcc"
           EOF
 
-      - name: Install aarch64-linux-gnu-gcc
+      - name: Install aarch64-unknown-linux-musl
         if: matrix.info.target == 'aarch64-unknown-linux-musl'
         run: |
           sudo apt-get update
-          sudo apt-get install aarch64-linux-musl-gcc
+          sudo apt-get install musl-tools
           cat << EOF >> ./.cargo/config.toml
           
           [target.aarch64-unknown-linux-musl]
-          linker = "aarch64-linux-musl-gcc"
+          linker = "musl-gcc"
           EOF
 
       - name: Install x86_64-unknown-linux-musl
@@ -105,7 +105,7 @@ jobs:
           cat << EOF >> ./.cargo/config.toml
           
           [target.x86_64-unknown-linux-musl]
-          linker = "x86_64-linux-musl-gcc"
+          linker = "musl-gcc"
           EOF
 
       - name: Build Hayabusa binary
