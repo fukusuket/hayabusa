@@ -37,14 +37,14 @@ jobs:
             os: "ubuntu-24.04",
             target: "aarch64-unknown-linux-gnu",
           }
-          - {
-            os: "ubuntu-22.04",
-            target: "x86_64-unknown-linux-musl",
-          }
-          - {
-            os: "ubuntu-20.04",
-            target: "aarch64-unknown-linux-musl",
-          }
+#          - {
+#            os: "ubuntu-22.04",
+#            target: "x86_64-unknown-linux-musl",
+#          }
+#          - {
+#            os: "ubuntu-20.04",
+#            target: "aarch64-unknown-linux-musl",
+#          }
           - {
             os: "macos-latest",
             target: "aarch64-apple-darwin",
@@ -78,7 +78,7 @@ jobs:
       - name: Build Hayabusa binary
         run: |
           cargo run --release -- update-rules -q
-          cargo build --release
+          cargo build --release --target ${{ matrix.info.target }}
 
       - name: Package and Zip - Windows
         if: contains(matrix.info.os, 'windows') == true
