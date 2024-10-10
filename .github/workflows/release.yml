@@ -41,10 +41,10 @@ jobs:
             os: "ubuntu-22.04",
             target: "x86_64-unknown-linux-musl",
           }
-#          - {
-#            os: "ubuntu-20.04",
-#            target: "aarch64-unknown-linux-musl",
-#          }
+          - {
+            os: "ubuntu-20.04",
+            target: "aarch64-unknown-linux-musl",
+          }
           - {
             os: "macos-latest",
             target: "aarch64-apple-darwin",
@@ -90,11 +90,11 @@ jobs:
         if: matrix.info.target == 'aarch64-unknown-linux-musl'
         run: |
           sudo apt-get update
-          sudo apt-get install musl-tools
+          sudo apt-get install -y build-essential musl-tools gcc-aarch64-linux-gnu
           cat << EOF >> ./.cargo/config.toml
           
           [target.aarch64-unknown-linux-musl]
-          linker = "musl-gcc"
+          linker = "aarch64-linux-gnu-gcc"
           EOF
 
       - name: Install x86_64-unknown-linux-musl
