@@ -102,6 +102,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install musl-tools
+          cat << EOF >> ./.cargo/config.toml
+          
+          [target.aarch64-unknown-linux-musl]
+          rustflags = ["-C", "target-feature=+crt-static"]
+          EOF
+
 
       - name: Build Hayabusa binary
         run: |
